@@ -4,7 +4,7 @@
   "description": "A generator to get you started on making FEAN Stack based apps",
   "main": "fean.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node config/cli.js"
   },
   "author": "joselevelsup",
   "license": "ISC",
