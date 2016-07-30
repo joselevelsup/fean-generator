@@ -1,6 +1,6 @@
 {
   "name": "fean-generator",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "A generator to get you started on making FEAN Stack based apps",
   "main": "fean.js",
   "scripts": {
