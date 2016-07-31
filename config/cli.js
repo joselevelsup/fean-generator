@@ -1,25 +1,30 @@
-var chalk = require("chalk"),
-    co = require("co"),
-    prompt = require("co-prompt"),
-    ProgressBar = require("progress"),
-    sh = require("shelljs"),
-    fs = require('fs'),
-    request = require('request'),
-    commander = require('commander');
+var cli = require('commander'),
+chalk = require("chalk"),
+co = require("co"),
+prompt = require("co-prompt"),
+ProgressBar = require("progress"),
+sh = require("shelljs"),
+fs = require('fs'),
+request = require('request'),
+unzip = require('unzip');
 
-co(function*(){
-  //Use commander for project name and type. 
-    sh.mkdir('-p', projectName);
-    fs.access(projectName, fs.F_OK, function(err){
-      if(err){
-        sh.echo("Project does not exist");
-      } else{
-        sh.cd(projectName);
-        sh.echo(projectName+" Directory made!");
-	try{
-		//request goes here
-	}
-	}
-    });
+cli
+  .version("0.0.9-beta")
+  .arguments("<ProjectName>")
+  .option("clear", "Generates Clear FEAN Project")
+  .option("bootstrap", "Generates Bootstrap FEAN Project")
+  .action(function(ProjectName){
+    projectName = ProjectName
+  })
+  .parse(process.argv);
 
-});
+// console.log(cli.clear);
+
+if(cli.clear){
+  request('https://github.com/joselevelsup/fean-clear/archive/master.zip')
+  .pipe(fs.createWriteStream(projectName+".zip"))
+  .on('close', function(){
+    fs.createReadStream(projectName+'.zip').pipe(unzip.Extract({path: projectName}));
+    sh.echo(projectName+" Directory made!");
+  });
+}
