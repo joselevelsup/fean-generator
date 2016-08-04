@@ -1,7 +1,5 @@
 var cli = require('commander'),
 chalk = require("chalk"),
-co = require("co"),
-prompt = require("co-prompt"),
 ProgressBar = require("progress"),
 sh = require("shelljs"),
 fs = require('fs'),
@@ -18,13 +16,19 @@ cli
   })
   .parse(process.argv);
 
-// console.log(cli.clear);
-
 if(cli.clear){
   request('https://github.com/joselevelsup/fean-clear/archive/master.zip')
   .pipe(fs.createWriteStream(projectName+".zip"))
   .on('close', function(){
-    fs.createReadStream(projectName+'.zip').pipe(unzip.Extract({path: projectName}));
-    sh.echo(projectName+" Directory made!");
+    fs.createReadStream(projectName+'.zip').pipe(unzip.Extract({path: sh.pwd().stdout})); //Creates and extracts the file to the appropriate location
+    fs.unlink(projectName+'.zip'); //Deletes the zip file after unzipped
+    chalk.blue(projectName+" Directory made!");
+    setTimeout(function(){ //Set timeout because sometimes the directory isnt noticed straight away.
+      fs.rename(sh.pwd().stdout+"/fean-clear-master", sh.pwd().stdout+'/'+projectName, function(err){
+        if(err){
+          console.log(err);
+        }
+      });
+    }, 100);
   });
 }
