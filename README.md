@@ -1,4 +1,4 @@
-##FEAN Stack generator
+## FEAN Stack generator [Deprecated]
 
 `npm install -g fean-generator`
 
